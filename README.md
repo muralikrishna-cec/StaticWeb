@@ -42,4 +42,4 @@ StaticWeb/
 
 ## 🖼️ Screenshot
 
-![College Website Screenshot](images/screenshot.png)
+![College Website Screenshot](screenshot.png)
