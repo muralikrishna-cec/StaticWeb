@@ -32,14 +32,21 @@ This static page showcases proper semantic usage of HTML tags , basic CSS techni
 
 ---
 
+## 🖼️ Screenshot
+
+![College Website Screenshot](screenshot.png)
+
+---
+
 ## 📂 Project Structure
 
 ```bash
 StaticWeb/
-├── index.html       # Main HTML 
+├── index.html         # Main file
+├── screenshot.png     # Screenshot image for README
+└── README.md          # Project documentation
 
-└── README.md        # Project documentation
+---
 
-## 🖼️ Screenshot
 
-![College Website Screenshot](screenshot.png)
+
