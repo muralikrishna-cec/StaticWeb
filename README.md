@@ -1,6 +1,6 @@
-# 🌐 Static Web Page – MCA 1st Semester Web Programming Lab
+# 🌐 Static Web Page 
 
-This project is a ** Static Web Page** created as part of the MCA 1st Semester Web Programming Lab. The page is designed using **HTML and CSS only** .
+This project is a **Static Web Page** created as part of the **MCA 1st Semester Web Programming Lab** . The page is designed using **HTML and CSS only** .
 
 🔗 **Live Demo:**  
 [Click here to view the web page](https://muralikrishna-cec.github.io/StaticWeb/)
