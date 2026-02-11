@@ -54,19 +54,20 @@
         .col-sl { width: 25px; }
         .col-rate { width: 50px; }
 
-        .pooja-header {
+        .full-width-header {
             background-color: #333;
             color: white;
             text-align: center;
             font-weight: bold;
             padding: 5px;
             font-size: 11px;
+            border: 1px solid #000;
         }
 
         @media print {
             .main-header { background-color: #d32f2f !important; -webkit-print-color-adjust: exact; }
             .category-row { background-color: #e0e0e0 !important; -webkit-print-color-adjust: exact; }
-            .pooja-header { background-color: #333 !important; -webkit-print-color-adjust: exact; }
+            .full-width-header { background-color: #333 !important; -webkit-print-color-adjust: exact; }
         }
     </style>
 </head>
@@ -105,7 +106,7 @@
                 <tr><td class="center-text">13</td><td>രക്തപുഷ്‌പാഞ്ജലി</td><td class="center-text">125</td></tr>
 
                 <tr class="category-row"><td colspan="3">ഹോമങ്ങൾ</td></tr>
-                <tr><td class="center-text">14</td><td>ഗണපതിഹോമം</td><td class="center-text">50</td></tr>
+                <tr><td class="center-text">14</td><td>ഗണപതിഹോമം</td><td class="center-text">50</td></tr>
                 <tr><td class="center-text">15</td><td>കറുകഹോമം</td><td class="center-text">150</td></tr>
                 <tr><td class="center-text">16</td><td>മൃത്യുഞ്ജയഹോമം</td><td class="center-text">1500</td></tr>
 
@@ -127,8 +128,8 @@
                 <tr><td class="center-text">29</td><td>രുദ്രാഭിഷേകം</td><td class="center-text">250</td></tr>
 
                 <tr class="category-row"><td colspan="3">വാഹന പൂജകൾ</td></tr>
-                <tr><td class="center-text">30</td><td>വാഹനപൂജ (ടു വീലർ)</td><td class="center-text">200</td></tr>
-                <tr><td class="center-text">31</td><td>വാഹനപൂജ (ഫോർ വീലർ)</td><td class="center-text">300</td></tr>
+                <tr><td class="center-text">30</td><td>വാഹനപൂജ (2 Wheeler)</td><td class="center-text">200</td></tr>
+                <tr><td class="center-text">31</td><td>വാഹനപൂജ (4 Wheeler)</td><td class="center-text">300</td></tr>
             </tbody>
         </table>
     </div>
@@ -138,7 +139,7 @@
             <thead>
                 <tr>
                     <th class="col-sl center-text">Sl No</th>
-                    <th>വഴിപാടുകൾ (തുടർച്ച)</th>
+                    <th>മറ്റ് വഴിപാടുകൾ</th>
                     <th class="col-rate center-text">നിരക്ക് (₹)</th>
                 </tr>
             </thead>
@@ -178,9 +179,17 @@
                 <tr><td class="center-text">63</td><td>ചിറപ്പ് (ലേബർ)</td><td class="center-text">1000</td></tr>
                 <tr><td class="center-text">64</td><td>ഉദയാസ്‌തമയപൂജ</td><td class="center-text">5000</td></tr>
                 <tr><td class="center-text">65</td><td>ചിറപ്പ് (പൂർണ്ണം)</td><td class="center-text">6000</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-                <tr class="category-row"><td colspan="3">കൊച്ചു മലനട വഴിപാടുകൾ</td></tr>
-                <tr><td class="center-text">1</td><td>വിളക്ക്</td><td class="center-text">15</td></tr>
+<div class="full-width-header">കൊച്ചു മലനട വഴിപാടുകൾ</div>
+<div class="container">
+    <div class="column">
+        <table>
+            <tbody>
+                <tr><td class="center-text col-sl">1</td><td>വിളക്ക്</td><td class="center-text col-rate">15</td></tr>
                 <tr><td class="center-text">2</td><td>പുറകുവിളക്ക്</td><td class="center-text">15</td></tr>
                 <tr><td class="center-text">3</td><td>കെടാവിളക്ക്</td><td class="center-text">20</td></tr>
                 <tr><td class="center-text">4</td><td>ചന്ദനം ചാർത്ത്</td><td class="center-text">20</td></tr>
@@ -190,7 +199,13 @@
                 <tr><td class="center-text">8</td><td>മലർ നിവേദ്യം</td><td class="center-text">40</td></tr>
                 <tr><td class="center-text">9</td><td>തൃമധുരം</td><td class="center-text">40</td></tr>
                 <tr><td class="center-text">10</td><td>ഗണപതിഹോമം</td><td class="center-text">50</td></tr>
-                <tr><td class="center-text">11</td><td>പാൽപായസം</td><td class="center-text">50</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="column">
+        <table>
+            <tbody>
+                <tr><td class="center-text col-sl">11</td><td>പാൽപായസം</td><td class="center-text col-rate">50</td></tr>
                 <tr><td class="center-text">12</td><td>നീരാഞ്ജനം</td><td class="center-text">50</td></tr>
                 <tr><td class="center-text">13</td><td>ഉടയാട ചാർത്ത്</td><td class="center-text">50</td></tr>
                 <tr><td class="center-text">14</td><td>രക്തപുഷ്‌പാഞ്ജലി</td><td class="center-text">125</td></tr>
@@ -205,9 +220,9 @@
     </div>
 </div>
 
+<div class="full-width-header">പൂജ ദ്രവ്യങ്ങൾ</div>
 <table>
     <thead>
-        <tr><th colspan="3" class="pooja-header">പൂജ ദ്രവ്യങ്ങൾ</th></tr>
         <tr>
             <th width="10%" class="center-text">Sl No</th>
             <th>സാധനത്തിന്റെ പേര്</th>
