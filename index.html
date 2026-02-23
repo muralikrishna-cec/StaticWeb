@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insta Data Pro Analyzer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body { background-color: #f4f7f6; padding-top: 30px; }
         .card { border-radius: 12px; border: none; box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
         .result-box { max-height: 400px; overflow-y: auto; background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 15px; }
         .user-link { text-decoration: none; color: #0d6efd; font-weight: 500; }
         .user-link:hover { text-decoration: underline; }
-        .chunk-container { border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; margin-bottom: 15px; background-color: #fdfdfd; }
+        .chunk-container { border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; margin-bottom: 15px; background-color: #fdfdfd; page-break-inside: avoid; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container mb-5">
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="card p-4 mb-4">
@@ -34,18 +35,22 @@
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
                         <button class="btn btn-primary px-5 btn-lg" onclick="analyzeData()">Analyze Relations</button>
+                        <button id="downloadPdfBtn" class="btn btn-danger px-5 btn-lg" onclick="downloadPDF()" style="display:none;">Download PDF Plan</button>
                     </div>
 
                     <div id="results" class="mt-4" style="display:none;">
                         <hr>
+                        <div class="text-center mb-3">
+                            <h4 id="reportTitle" style="display:none;">Instagram Action Plan</h4>
+                        </div>
                         <div class="row text-center mb-4">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="p-4 bg-success text-white rounded shadow-sm">
                                     <h5 class="mb-0">Current Followers</h5>
                                     <h2 id="followerCount" class="fw-bold mb-0 display-5">0</h2>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="p-4 bg-info text-white rounded shadow-sm">
                                     <h5 class="mb-0">Currently Following</h5>
                                     <h2 id="followingCount" class="fw-bold mb-0 display-5">0</h2>
@@ -58,7 +63,7 @@
                                 <h5 class="text-danger fw-bold border-bottom pb-2">
                                     Not Following You Back: <span id="notFollowingCount" class="badge bg-danger">0</span>
                                 </h5>
-                                <p class="small text-muted mb-2">Divided into safe chunks of 25 per day.</p>
+                                <p class="small text-muted mb-2 hide-in-pdf">Divided into safe chunks of 25 per day.</p>
                                 <div id="notFollowingBackList" class="result-box"></div>
                             </div>
 
@@ -66,7 +71,7 @@
                                 <h5 class="text-warning fw-bold border-bottom pb-2" style="color: #d39e00 !important;">
                                     Profiles to Review: <span id="reviewCount" class="badge bg-warning text-dark">0</span>
                                 </h5>
-                                <p class="small text-muted mb-2">Divided into safe chunks of 25 per day.</p>
+                                <p class="small text-muted mb-2 hide-in-pdf">Divided into safe chunks of 25 per day.</p>
                                 <div id="reviewList" class="result-box"></div>
                             </div>
                         </div>
@@ -117,11 +122,12 @@
             document.getElementById('notFollowingCount').textContent = notFollowingBack.length;
             document.getElementById('reviewCount').textContent = followingList.length;
 
-            // Render Safe Chunked Lists
+            // Render Safe Chunked Lists with AM/PM and Dates
             renderChunkedList('notFollowingBackList', notFollowingBack, "Day");
             renderChunkedList('reviewList', followingList, "Day");
             
             document.getElementById('results').style.display = 'block';
+            document.getElementById('downloadPdfBtn').style.display = 'inline-block';
         }
 
         // Helper function to split arrays into safe sizes (25 items)
@@ -144,20 +150,40 @@
             const chunks = chunkArray(dataArray, 25);
             let html = '';
             
+            // Get today's date
+            const startDate = new Date();
+            
             chunks.forEach((chunk, index) => {
+                // Calculate date for this chunk
+                const actionDate = new Date(startDate);
+                actionDate.setDate(startDate.getDate() + index);
+                const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+                const formattedDate = actionDate.toLocaleDateString('en-US', dateOptions);
+
                 // Join usernames by a comma to store in a data attribute
                 const userListString = chunk.join(',');
                 
+                // Split 25 into Before Noon (12) and After Noon (13)
+                const morningChunk = chunk.slice(0, 12);
+                const afternoonChunk = chunk.slice(12);
+                
                 html += `
                 <div class="chunk-container shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
-                        <strong class="text-secondary">${titlePrefix} ${index + 1} <span class="badge bg-secondary ms-1">${chunk.length}</span></strong>
-                        <button class="btn btn-sm btn-outline-primary fw-bold" data-users="${userListString}" onclick="copyList(this)">
+                    <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                        <strong class="text-secondary">${titlePrefix} ${index + 1} - ${formattedDate} <span class="badge bg-secondary ms-1">${chunk.length}</span></strong>
+                        <button class="btn btn-sm btn-outline-primary fw-bold hide-in-pdf" data-users="${userListString}" onclick="copyList(this)">
                             Copy @Usernames
                         </button>
                     </div>
-                    <div>
-                        ${chunk.map(user => `<div class="mb-1"><a href="https://instagram.com/${user}" target="_blank" class="user-link">@${user}</a></div>`).join('')}
+                    <div class="row">
+                        <div class="col-6 border-end">
+                            <small class="text-primary fw-bold d-block mb-2">Before Noon (${morningChunk.length})</small>
+                            ${morningChunk.map(user => `<div class="mb-1"><a href="https://instagram.com/${user}" target="_blank" class="user-link">@${user}</a></div>`).join('')}
+                        </div>
+                        <div class="col-6">
+                            <small class="text-primary fw-bold d-block mb-2">After Noon (${afternoonChunk.length})</small>
+                            ${afternoonChunk.map(user => `<div class="mb-1"><a href="https://instagram.com/${user}" target="_blank" class="user-link">@${user}</a></div>`).join('')}
+                        </div>
                     </div>
                 </div>`;
             });
@@ -167,12 +193,10 @@
 
         // Copy logic for the buttons
         function copyList(btn) {
-            // Read from data attribute, add '@' and a new line to each user
             const usersArray = btn.getAttribute('data-users').split(',');
             const formattedText = usersArray.map(u => '@' + u).join('\n');
             
             navigator.clipboard.writeText(formattedText).then(() => {
-                // Visual feedback on the button
                 const originalText = btn.innerHTML;
                 btn.innerText = 'Copied!';
                 btn.classList.replace('btn-outline-primary', 'btn-success');
@@ -183,6 +207,41 @@
                 }, 2000);
             }).catch(err => {
                 alert("Failed to copy list: " + err);
+            });
+        }
+
+        // Generate and Download PDF
+        function downloadPDF() {
+            const element = document.getElementById('results');
+            const resultBoxes = document.querySelectorAll('.result-box');
+            const hideElements = document.querySelectorAll('.hide-in-pdf');
+            const reportTitle = document.getElementById('reportTitle');
+            
+            // Prepare UI for printing (Expand scrollable lists, hide copy buttons)
+            resultBoxes.forEach(box => {
+                box.style.maxHeight = 'none';
+                box.style.overflowY = 'visible';
+            });
+            hideElements.forEach(el => el.style.display = 'none');
+            reportTitle.style.display = 'block';
+
+            const opt = {
+                margin:       0.4,
+                filename:     'Instagram_Action_Plan.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generate PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restore UI back to normal after PDF is generated
+                resultBoxes.forEach(box => {
+                    box.style.maxHeight = '400px';
+                    box.style.overflowY = 'auto';
+                });
+                hideElements.forEach(el => el.style.display = 'inline-block');
+                reportTitle.style.display = 'none';
             });
         }
     </script>
