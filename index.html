@@ -4,64 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insta Data Pro Analyzer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+            --header-gradient: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            --primary-purple: #6366f1;
+            --primary-purple-hover: #4f46e5;
+            --bg-neutral: #f8fafc;
+        }
+
         body {
-            background-color: #f4f7f6;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-neutral);
+            color: #334155;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
+
         .main-content {
             flex: 1;
         }
+
+        /* Navbar Styling */
+        .navbar {
+            background: var(--header-gradient) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.35rem;
+        }
+
+        /* Cards & Containers */
         .card {
+            border-radius: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            background: #ffffff;
+        }
+
+        /* Custom Navigation Pills */
+        .nav-pills {
+            background-color: #f1f5f9 !important;
             border-radius: 12px;
-            border: none;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            padding: 6px;
         }
-        .result-box {
-            max-height: 400px;
-            overflow-y: auto;
-            background: #fff;
-            border: 1px solid #eee;
+
+        .nav-pills .nav-link {
+            color: #64748b;
             border-radius: 8px;
-            padding: 15px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
         }
+
+        .nav-pills .nav-link:hover {
+            color: #1e293b;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #ffffff;
+            color: var(--primary-purple);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Inputs & Form Elements */
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem 0.9rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Result Box & Chunks */
+        .result-box {
+            max-height: 420px;
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .chunk-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+            background-color: #f8fafc;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .chunk-container:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
         .user-link {
             text-decoration: none;
-            color: #0d6efd;
+            color: #3b82f6;
             font-weight: 500;
+            transition: color 0.15s ease;
         }
+
         .user-link:hover {
+            color: #1d4ed8;
             text-decoration: underline;
         }
-        .chunk-container {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 15px;
-            background-color: #fdfdfd;
-            page-break-inside: avoid;
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--primary-purple);
+            border-color: var(--primary-purple);
+            border-radius: 10px;
+            font-weight: 600;
         }
-        .nav-pills .nav-link.active {
-            background-color: #0d6efd;
+
+        .btn-primary:hover {
+            background-color: var(--primary-purple-hover);
+            border-color: var(--primary-purple-hover);
         }
+
+        .btn-danger {
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        /* Footer */
         footer {
-            background-color: #212529;
-            color: #ccc;
+            background-color: #0f172a;
+            color: #94a3b8;
+            border-top: 1px solid #1e293b;
         }
     </style>
 </head>
 <body>
 
     <!-- Header / Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-3">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
                 📸 Insta Data Pro
             </a>
             <span class="navbar-text small text-white-50">
@@ -71,19 +172,19 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container my-4 main-content">
+    <div class="container my-5 main-content">
         <div class="row justify-content-center">
             <div class="col-lg-10">
 
                 <!-- Navigation Tabs -->
-                <ul class="nav nav-pills nav-justified mb-4 card p-2 bg-white flex-row" id="analyzerTabs" role="tablist">
+                <ul class="nav nav-pills nav-justified mb-4 card p-1 flex-row" id="analyzerTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active fw-bold py-2" id="relations-tab" data-bs-toggle="tab" data-bs-target="#relations-pane" type="button" role="tab" aria-controls="relations-pane" aria-selected="true">
+                        <button class="nav-link active py-2.5" id="relations-tab" data-bs-toggle="tab" data-bs-target="#relations-pane" type="button" role="tab" aria-controls="relations-pane" aria-selected="true">
                             👥 Relations Analyzer
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link fw-bold py-2" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending-pane" type="button" role="tab" aria-controls="pending-pane" aria-selected="false">
+                        <button class="nav-link py-2.5" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending-pane" type="button" role="tab" aria-controls="pending-pane" aria-selected="false">
                             ⏳ Pending Follow Requests
                         </button>
                     </li>
@@ -94,59 +195,61 @@
                     
                     <!-- TAB 1: RELATIONS ANALYZER -->
                     <div class="tab-pane fade show active" id="relations-pane" role="tabpanel" aria-labelledby="relations-tab">
-                        <div class="card p-4 mb-4">
-                            <h3 class="text-center mb-3 fw-bold text-primary">Instagram Relations Pro</h3>
-                            <p class="text-muted text-center mb-4 small">Upload your followers and following HTML export files to find who doesn't follow you back.</p>
+                        <div class="card p-4 p-md-5 mb-4">
+                            <h3 class="text-center mb-2 fw-bold" style="color: #0f172a;">Instagram Relations Pro</h3>
+                            <p class="text-muted text-center mb-4 small">Upload your followers and following HTML export files to analyze relationship overlaps.</p>
                             
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">1. Upload followers_1.html</label>
+                                    <label class="form-label fw-bold small text-uppercase text-secondary">1. Upload followers_1.html</label>
                                     <input type="file" id="followersFile" class="form-control" accept=".html">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">2. Upload following.html</label>
+                                    <label class="form-label fw-bold small text-uppercase text-secondary">2. Upload following.html</label>
                                     <input type="file" id="followingFile" class="form-control" accept=".html">
                                 </div>
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
-                                <button class="btn btn-primary px-5 btn-lg" onclick="analyzeData()">Analyze Relations</button>
-                                <button id="downloadPdfBtn" class="btn btn-danger px-5 btn-lg" onclick="downloadPDF('results', 'Instagram_Relations_Plan.pdf')" style="display:none;">Download PDF Plan</button>
+                                <button class="btn btn-primary px-5 py-2.5" onclick="analyzeData()">Analyze Relations</button>
+                                <button id="downloadPdfBtn" class="btn btn-danger px-5 py-2.5" onclick="downloadPDF('results', 'Instagram_Relations_Plan.pdf')" style="display:none;">Download PDF Plan</button>
                             </div>
 
                             <div id="results" class="mt-4" style="display:none;">
-                                <hr>
+                                <hr class="my-4">
                                 <div class="text-center mb-3">
-                                    <h4 id="reportTitle" class="pdf-report-title" style="display:none;">Instagram Relations Action Plan</h4>
+                                    <h4 id="reportTitle" class="pdf-report-title fw-bold text-dark" style="display:none;">Instagram Relations Action Plan</h4>
                                 </div>
                                 <div class="row text-center mb-4">
                                     <div class="col-md-6 mb-3">
-                                        <div class="p-4 bg-success text-white rounded shadow-sm">
-                                            <h5 class="mb-0">Current Followers</h5>
-                                            <h2 id="followerCount" class="fw-bold mb-0 display-5">0</h2>
+                                        <div class="p-4 bg-light border rounded-3">
+                                            <span class="text-uppercase small fw-bold text-muted">Current Followers</span>
+                                            <h2 id="followerCount" class="fw-bold mb-0 display-6 text-dark mt-1">0</h2>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <div class="p-4 bg-info text-white rounded shadow-sm">
-                                            <h5 class="mb-0">Currently Following</h5>
-                                            <h2 id="followingCount" class="fw-bold mb-0 display-5">0</h2>
+                                        <div class="p-4 bg-light border rounded-3">
+                                            <span class="text-uppercase small fw-bold text-muted">Currently Following</span>
+                                            <h2 id="followingCount" class="fw-bold mb-0 display-6 text-dark mt-1">0</h2>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <h5 class="text-danger fw-bold border-bottom pb-2">
-                                            Not Following You Back: <span id="notFollowingCount" class="badge bg-danger">0</span>
-                                        </h5>
+                                        <h6 class="text-danger fw-bold border-bottom pb-2 d-flex justify-content-between align-items-center">
+                                            <span>Not Following You Back</span>
+                                            <span id="notFollowingCount" class="badge bg-danger rounded-pill">0</span>
+                                        </h6>
                                         <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 25.</p>
                                         <div id="notFollowingBackList" class="result-box"></div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <h5 class="text-warning fw-bold border-bottom pb-2" style="color: #d39e00 !important;">
-                                            Profiles to Review: <span id="reviewCount" class="badge bg-warning text-dark">0</span>
-                                        </h5>
+                                        <h6 class="text-warning fw-bold border-bottom pb-2 d-flex justify-content-between align-items-center" style="color: #d97706 !important;">
+                                            <span>Profiles to Review</span>
+                                            <span id="reviewCount" class="badge bg-warning text-dark rounded-pill">0</span>
+                                        </h6>
                                         <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 25.</p>
                                         <div id="reviewList" class="result-box"></div>
                                     </div>
@@ -157,41 +260,42 @@
 
                     <!-- TAB 2: PENDING FOLLOW REQUESTS -->
                     <div class="tab-pane fade" id="pending-pane" role="tabpanel" aria-labelledby="pending-tab">
-                        <div class="card p-4 mb-4">
-                            <h3 class="text-center mb-3 fw-bold text-primary">Pending Follow Requests</h3>
-                            <p class="text-muted text-center mb-4 small">Upload your pending follow requests file (e.g. <code>pending_follow_requests.html</code>) to track sent requests.</p>
+                        <div class="card p-4 p-md-5 mb-4">
+                            <h3 class="text-center mb-2 fw-bold" style="color: #0f172a;">Pending Follow Requests</h3>
+                            <p class="text-muted text-center mb-4 small">Upload your pending follow requests export file (e.g., <code>pending_follow_requests.html</code>).</p>
                             
                             <div class="row justify-content-center">
                                 <div class="col-md-8 mb-3">
-                                    <label class="form-label fw-bold">Upload pending_follow_requests.html</label>
+                                    <label class="form-label fw-bold small text-uppercase text-secondary">Upload pending_follow_requests.html</label>
                                     <input type="file" id="pendingFile" class="form-control" accept=".html">
                                 </div>
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
-                                <button class="btn btn-primary px-5 btn-lg" onclick="analyzePendingData()">Analyze Pending Requests</button>
-                                <button id="downloadPendingPdfBtn" class="btn btn-danger px-5 btn-lg" onclick="downloadPDF('pendingResults', 'Pending_Follow_Requests_Plan.pdf')" style="display:none;">Download PDF Plan</button>
+                                <button class="btn btn-primary px-5 py-2.5" onclick="analyzePendingData()">Analyze Pending Requests</button>
+                                <button id="downloadPendingPdfBtn" class="btn btn-danger px-5 py-2.5" onclick="downloadPDF('pendingResults', 'Pending_Follow_Requests_Plan.pdf')" style="display:none;">Download PDF Plan</button>
                             </div>
 
                             <div id="pendingResults" class="mt-4" style="display:none;">
-                                <hr>
+                                <hr class="my-4">
                                 <div class="text-center mb-3">
-                                    <h4 id="pendingReportTitle" class="pdf-report-title" style="display:none;">Pending Follow Requests Action Plan</h4>
+                                    <h4 id="pendingReportTitle" class="pdf-report-title fw-bold text-dark" style="display:none;">Pending Follow Requests Action Plan</h4>
                                 </div>
                                 <div class="row text-center mb-4 justify-content-center">
                                     <div class="col-md-6 mb-3">
-                                        <div class="p-4 bg-warning text-dark rounded shadow-sm">
-                                            <h5 class="mb-0">Total Pending Requests</h5>
-                                            <h2 id="pendingCount" class="fw-bold mb-0 display-5">0</h2>
+                                        <div class="p-4 bg-light border rounded-3">
+                                            <span class="text-uppercase small fw-bold text-muted">Total Pending Requests</span>
+                                            <h2 id="pendingCount" class="fw-bold mb-0 display-6 text-dark mt-1">0</h2>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-10 mb-3">
-                                        <h5 class="text-primary fw-bold border-bottom pb-2">
-                                            Pending Requests Queue: <span id="pendingQueueBadge" class="badge bg-primary">0</span>
-                                        </h5>
+                                        <h6 class="text-primary fw-bold border-bottom pb-2 d-flex justify-content-between align-items-center">
+                                            <span>Pending Requests Queue</span>
+                                            <span id="pendingQueueBadge" class="badge bg-primary rounded-pill">0</span>
+                                        </h6>
                                         <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 50 (25 AM / 25 PM).</p>
                                         <div id="pendingList" class="result-box"></div>
                                     </div>
@@ -206,14 +310,13 @@
     </div>
 
     <!-- Footer -->
-    <footer class="text-center text-lg-start mt-auto py-3">
+    <footer class="text-center py-4 mt-auto">
         <div class="container text-center">
-            <span class="small">&copy; Insta Data Pro Analyzer &bull; 100% Client-Side Browser Security</span>
+            <span class="small">&copy; Insta Data Pro Analyzer &bull; 100% Client-Side Browser Processing</span>
         </div>
     </footer>
 
     <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -278,24 +381,42 @@
             const pendingDoc = parser.parseFromString(pendingText, "text/html");
             const pendingList = [];
 
-            // Parse HTML for pending requests
-            pendingDoc.querySelectorAll('a').forEach(a => {
-                let user = a.textContent.trim();
-                // If text inside tag is a link, get username from href/path
-                if (!user || user.startsWith('http')) {
-                    const href = a.getAttribute('href');
-                    if (href) {
-                        user = href.split('/').filter(Boolean).pop();
+            // Approach 1: Parse Table Structure (Instagram's export format with "Username" label)
+            const rows = pendingDoc.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 2) {
+                    const label = cells[0].textContent.trim().toLowerCase();
+                    if (label === 'username') {
+                        let username = cells[1].textContent.trim();
+                        if (username.startsWith('@')) {
+                            username = username.substring(1);
+                        }
+                        if (username) {
+                            pendingList.push(username);
+                        }
                     }
                 }
-                // Clean leading '@' if present
-                if (user && user.startsWith('@')) {
-                    user = user.substring(1);
-                }
-                if (user && !user.includes('http')) {
-                    pendingList.push(user);
-                }
             });
+
+            // Approach 2: Fallback parsing for <a> links or plain text lists
+            if (pendingList.length === 0) {
+                pendingDoc.querySelectorAll('a').forEach(a => {
+                    let user = a.textContent.trim();
+                    if (!user || user.startsWith('http')) {
+                        const href = a.getAttribute('href');
+                        if (href) {
+                            user = href.split('/').filter(Boolean).pop();
+                        }
+                    }
+                    if (user && user.startsWith('@')) {
+                        user = user.substring(1);
+                    }
+                    if (user && !user.includes('http')) {
+                        pendingList.push(user);
+                    }
+                });
+            }
 
             // UI Display - Pending Totals
             document.getElementById('pendingCount').textContent = pendingList.length;
@@ -310,7 +431,6 @@
 
         // --- HELPER FUNCTIONS ---
 
-        // Helper function to split arrays into safe chunk sizes
         function chunkArray(arr, size) {
             const chunks = [];
             for (let i = 0; i < arr.length; i += size) {
@@ -319,11 +439,10 @@
             return chunks;
         }
 
-        // Helper function to render HTML for chunked lists with dates and AM/PM splits
         function renderChunkedList(containerId, dataArray, titlePrefix, chunkSize = 25) {
             const container = document.getElementById(containerId);
             if(dataArray.length === 0) {
-                container.innerHTML = "<p class='text-muted mt-3 text-center'>No accounts found here.</p>";
+                container.innerHTML = "<p class='text-muted mt-3 text-center small'>No accounts found here.</p>";
                 return;
             }
 
@@ -339,7 +458,6 @@
 
                 const userListString = chunk.join(',');
                 
-                // Divide chunk into morning and afternoon slots dynamically based on chunk size
                 const halfIndex = Math.ceil(chunk.length / 2);
                 const morningChunk = chunk.slice(0, halfIndex);
                 const afternoonChunk = chunk.slice(halfIndex);
@@ -347,19 +465,19 @@
                 html += `
                 <div class="chunk-container shadow-sm">
                     <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
-                        <strong class="text-secondary">${titlePrefix} ${index + 1} - ${formattedDate} <span class="badge bg-secondary ms-1">${chunk.length}</span></strong>
+                        <strong class="text-dark small">${titlePrefix} ${index + 1} &bull; ${formattedDate} <span class="badge bg-secondary ms-1">${chunk.length}</span></strong>
                         <button class="btn btn-sm btn-outline-primary fw-bold hide-in-pdf" data-users="${userListString}" onclick="copyList(this)">
                             Copy @Usernames
                         </button>
                     </div>
-                    <div class="row">
+                    <div class="row g-2">
                         <div class="col-6 border-end">
-                            <small class="text-primary fw-bold d-block mb-2">Before Noon (${morningChunk.length})</small>
-                            ${morningChunk.map(user => `<div class="mb-1"><a href="https://instagram.com/${user}" target="_blank" class="user-link">@${user}</a></div>`).join('')}
+                            <small class="text-primary fw-bold d-block mb-1">Before Noon (${morningChunk.length})</small>
+                            ${morningChunk.map(user => `<div class="mb-1"><a href="https://instagram.com/${user}" target="_blank" class="user-link small">@${user}</a></div>`).join('')}
                         </div>
-                        <div class="col-6">
-                            <small class="text-primary fw-bold d-block mb-2">After Noon (${afternoonChunk.length})</small>
-                            ${afternoonChunk.map(user => `<div class="mb-1"><a href="https://instagram.com/${user}" target="_blank" class="user-link">@${user}</a></div>`).join('')}
+                        <div class="col-6 ms-auto">
+                            <small class="text-primary fw-bold d-block mb-1">After Noon (${afternoonChunk.length})</small>
+                            ${afternoonChunk.map(user => `<div class="mb-1"><a href="https://instagram.com/${user}" target="_blank" class="user-link small">@${user}</a></div>`).join('')}
                         </div>
                     </div>
                 </div>`;
@@ -368,7 +486,6 @@
             container.innerHTML = html;
         }
 
-        // Copy button handler
         function copyList(btn) {
             const usersArray = btn.getAttribute('data-users').split(',');
             const formattedText = usersArray.map(u => '@' + u).join('\n');
@@ -387,14 +504,12 @@
             });
         }
 
-        // Dynamic PDF Download function
         function downloadPDF(elementId, fileName) {
             const element = document.getElementById(elementId);
             const resultBoxes = element.querySelectorAll('.result-box');
             const hideElements = element.querySelectorAll('.hide-in-pdf');
             const reportTitle = element.querySelector('.pdf-report-title');
             
-            // Expand scrollable areas and hide interactive controls for export
             resultBoxes.forEach(box => {
                 box.style.maxHeight = 'none';
                 box.style.overflowY = 'visible';
@@ -410,11 +525,9 @@
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            // Generate PDF
             html2pdf().set(opt).from(element).save().then(() => {
-                // Restore layout after print PDF completion
                 resultBoxes.forEach(box => {
-                    box.style.maxHeight = '400px';
+                    box.style.maxHeight = '420px';
                     box.style.overflowY = 'auto';
                 });
                 hideElements.forEach(el => el.style.display = 'inline-block');
