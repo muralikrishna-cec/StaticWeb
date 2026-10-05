@@ -241,7 +241,7 @@
                                             <span>Not Following You Back</span>
                                             <span id="notFollowingCount" class="badge bg-danger rounded-pill">0</span>
                                         </h6>
-                                        <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 25.</p>
+                                        <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 25 (Oldest First).</p>
                                         <div id="notFollowingBackList" class="result-box"></div>
                                     </div>
 
@@ -250,7 +250,7 @@
                                             <span>Profiles to Review</span>
                                             <span id="reviewCount" class="badge bg-warning text-dark rounded-pill">0</span>
                                         </h6>
-                                        <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 25.</p>
+                                        <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 25 (Oldest First).</p>
                                         <div id="reviewList" class="result-box"></div>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@
                                             <span>Pending Requests Queue</span>
                                             <span id="pendingQueueBadge" class="badge bg-primary rounded-pill">0</span>
                                         </h6>
-                                        <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 50 (25 AM / 25 PM).</p>
+                                        <p class="small text-muted mb-2 hide-in-pdf">Divided into safe daily chunks of 50 (25 AM / 25 PM) - Oldest First.</p>
                                         <div id="pendingList" class="result-box"></div>
                                     </div>
                                 </div>
@@ -353,6 +353,10 @@
             const followingSet = new Set(followingList);
             const notFollowingBack = followingList.filter(user => !followersSet.has(user));
 
+            // Reverse lists so oldest connections come first and newly followed/requested accounts come last
+            const notFollowingBackReversed = [...notFollowingBack].reverse();
+            const followingListReversed = [...followingList].reverse();
+
             // UI Display - Totals
             document.getElementById('followerCount').textContent = followersSet.size;
             document.getElementById('followingCount').textContent = followingSet.size;
@@ -360,8 +364,8 @@
             document.getElementById('reviewCount').textContent = followingList.length;
 
             // Render Chunked Lists (25 items per day chunk)
-            renderChunkedList('notFollowingBackList', notFollowingBack, "Day", 25);
-            renderChunkedList('reviewList', followingList, "Day", 25);
+            renderChunkedList('notFollowingBackList', notFollowingBackReversed, "Day", 25);
+            renderChunkedList('reviewList', followingListReversed, "Day", 25);
             
             document.getElementById('results').style.display = 'block';
             document.getElementById('downloadPdfBtn').style.display = 'inline-block';
@@ -418,12 +422,15 @@
                 });
             }
 
+            // Reverse list so oldest requests come first and newest come last
+            const pendingListReversed = [...pendingList].reverse();
+
             // UI Display - Pending Totals
             document.getElementById('pendingCount').textContent = pendingList.length;
             document.getElementById('pendingQueueBadge').textContent = pendingList.length;
 
             // Render Chunked Lists (50 items per day chunk for pending requests)
-            renderChunkedList('pendingList', pendingList, "Set / Day", 50);
+            renderChunkedList('pendingList', pendingListReversed, "Set / Day", 50);
 
             document.getElementById('pendingResults').style.display = 'block';
             document.getElementById('downloadPendingPdfBtn').style.display = 'inline-block';
